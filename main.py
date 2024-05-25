@@ -1,38 +1,37 @@
 import os
 
-print("informe o caminho de uma pasta a ser organizada \nEx: disco_local pasta1 pasta 2 pasta3")
+print("insert the path to the directory \nEx: local_drive directory1 directory 2 directory3")
+src_directory = input("path:")
 
-pasta_src = input("")
+src_directory = src_directory.replace(" ", ":\\", 1).replace(" ", "\\")
 
-pasta_src = pasta_src.replace(" ", ":\\", 1).replace(" ", "\\")
+directory_content = os.listdir(src_directory)
 
-pasta_content = os.listdir(pasta_src)
+filename_extensions_folder = {"placeholder"}
+filename_extension_index = 1
 
-pasta_extensoes = {"set"}
+for file in directory_content:
+    filename_extensions_folder.add(os.path.splitext(file)[filename_extension_index])
 
-for i in pasta_content:
-    pasta_extensoes.add(os.path.splitext(i)[1])
+filename_extensions_folder.remove("")
+filename_extensions_folder.remove("placeholder") 
 
-pasta_extensoes.remove("")
-pasta_extensoes.remove("set") 
-
-for i in pasta_extensoes:
-    if not(os.path.exists(pasta_src + "\\" + i)):
-        os.mkdir(pasta_src + "\\" + i)
+for filename_extension in filename_extensions_folder:
+    if not(os.path.exists(src_directory + "\\" + filename_extension)):
+        os.mkdir(src_directory + "\\" + filename_extension)
     else:
         continue
 
-for i in pasta_content:
-    for j in pasta_extensoes:
-        if os.path.splitext(i)[1] == j :
-            os.replace(pasta_src + "\\" + i, pasta_src + "\\" + j + "\\" + i)
-        else:
-            continue
-    print("arquivos movidos com sucesso") 
+files_moved = 0
+files_iterated = 0
 
+for file in directory_content:
+    if os.path.splitext(file)[filename_extension_index] != "":
+        files_iterated += 1
 
+    for filename_extension in filename_extensions_folder:
+        if os.path.splitext(file)[filename_extension_index] == filename_extension :
+            os.replace(src_directory + "\\" + file, src_directory + "\\" + filename_extension + "\\" + file)
+            files_moved += 1
 
-
-    
-print(pasta_src)
-# ()
+print("{iterated} iterated files \n{moved} moved files".format(iterated=files_iterated, moved=files_moved)) 
